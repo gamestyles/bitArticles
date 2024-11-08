@@ -1,0 +1,9 @@
+pytest
+pytest-django
+#faker
+pytest-mock
+pytest-asyncio
+pytest-cov
+django-silk
+time-machine
+pip-tools

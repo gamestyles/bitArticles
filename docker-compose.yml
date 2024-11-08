@@ -1,0 +1,65 @@
+services:
+  postgres:
+    image: postgres:15.4-bullseye
+    container_name: postgres
+    volumes:
+      - /var/bitArticles/psql-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=bitpin
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    expose:
+      - 5432
+
+  app:
+    build: .
+    container_name: app
+    restart: always
+    volumes:
+      - .:/app
+#    volumes:
+#      - staticfiles_volume:/app/staticfiles
+#      - /var/log/bitArticles-api:/app/logs
+#      - ./configs.py:/app/configs.py
+#      - ./gunicorn.conf.py:/app/gunicorn.conf.py
+    command: gunicorn --bind 0.0.0.0:8000 bitArticles.wsgi:application
+    expose:
+      - 8000
+    depends_on:
+      - postgres
+      - redis
+
+  nginx:
+    image: nginx:1.25.2-bookworm-perl
+    container_name: nginx
+    restart: always
+    volumes:
+      - ./deploy/nginx/bitArticles-api.conf:/etc/nginx/conf.d/bitArticles-api.conf
+      - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - staticfiles_volume:/home/app/bitArticles/staticfiles
+      - /var/log/nginx:/var/log/nginx
+    ports:
+      - 80:80
+    depends_on:
+      - app
+
+  redis:
+    image: redis:7.2.3-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - /opt/bitArticles-files/redis-data:/data
+
+  celery-worker: &worker
+    build: .
+    container_name: celery-worker
+    command: celery -A bitArticles worker
+    environment:
+      - CELERY_WORKER_CONCURRENCY=${CELERY_WORKER_CONCURRENCY}
+    volumes:
+      - .:/app
+
+volumes:
+  staticfiles_volume:
