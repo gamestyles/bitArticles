@@ -74,13 +74,10 @@ def flag_suspicious_user_scores(article_id: int):
 
     # Retrieve all article scores in the last hour
     recent_scores = ArticleScore.objects.filter(article_id=article_id, created_at__gte=time_threshold)
-    _logger.info(f" len len len {recent_scores.count()}")
 
     # Extract score data and calculate mean and standard deviation
     total_score = recent_scores.aggregate(Sum("score"))["score__sum"]
     score_count = recent_scores.count()
-
-    _logger.info(f" total {total_score}")
 
     if score_count == 0:
         _logger.info("No recent scores to analyze.")
@@ -88,8 +85,6 @@ def flag_suspicious_user_scores(article_id: int):
 
     # Calculate mean and standard deviation
     mean_score = total_score / score_count
-
-    _logger.info(f"mean: {mean_score}")
 
     total_squared_diff = 0
     for score_entry in recent_scores:
