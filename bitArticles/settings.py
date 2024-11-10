@@ -60,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'common.middlewares.UserFingerprintMiddleware',
 ]
 
 ROOT_URLCONF = 'bitArticles.urls'
@@ -154,7 +155,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_PERMISSION_CLASSES': (
-
+        'common.permissions.IsFingerprintAvailable',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
 
@@ -233,3 +234,14 @@ HEALTHCHECK_CELERY_QUEUE_TIMEOUT = celery_confs.get('HEALTHCHECK_CELERY_QUEUE_TI
 # Additional Configs
 API_VERSION = api.get('API_VERSION', 'v1')
 API_PREFIX = "api/" + API_VERSION + "/"
+
+# swagger
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+      'API-KEY': {
+        'type': 'fingerprintID',
+        'name': 'X-FINGERPRINT-ID',
+        'in': 'header'
+      }
+   }
+}

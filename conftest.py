@@ -10,7 +10,7 @@ pytest_plugins = [
 ]
 
 fixtures = [
-    "tests.account.fixtures", "tests.api.fixtures", "tests.message.fixtures",
+
 ]
 
 pytest_plugins += fixtures
