@@ -32,7 +32,11 @@ app.conf.beat_schedule = {
     # executes every 30 seconds
     'periodic-scheduled-article-stat-calculation': {
         'task': 'article.tasks.find_and_execute_article_stats_calculation_task',
-        'schedule': timedelta(seconds=30),  # can be configured
+        'schedule': timedelta(seconds=30),  # should be configured
+    },
+    'periodic-scheduled-article-suspicious-score-calculation': {
+        'task': 'article.tasks.find_and_execute_article_suspicious_score_task',
+        'schedule': timedelta(minutes=10),  # should be configured
     },
 }
 

@@ -21,5 +21,5 @@ checkmigrations:
 gunicorn:
 	gunicorn --bind 0.0.0.0:8000 bitArticles.wsgi:application
 
-init: configs migrate statics superuser
+init: migrate statics superuser
 
