@@ -1,8 +1,12 @@
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import ListModelMixin
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.serializers.articles import ArticleSerializer
+from api.serializers.articles import ArticleSerializer, ArticleScoreUserSerializer, ArticleScoreSerializer
+from article.handlers import ArticleScoreUserHandler
 from article.models import Article, ArticleScore
 
 
@@ -39,6 +43,22 @@ class ArticleScoreAPIView(APIView):
 
     Rate an article for specific user
     """
+    def get_serializer(self, *args, **kwargs):
+        return ArticleScoreUserSerializer(*args, **kwargs)
 
-    def put(self, request, *args, **kwargs):
-        pass
+    @swagger_auto_schema(
+        responses={
+            200: ArticleScoreSerializer
+        }
+    )
+    def put(self, request, article_id: int, *args, **kwargs):
+        """Creates a new score for the specified article, if exists, updates it."""
+        # serialize data and validation
+        serialized_data = self.get_serializer(data=request.data)
+        serialized_data.is_valid(raise_exception=True)
+
+        # handle the request with given data
+        as_handler = ArticleScoreUserHandler(serialized_data.validated_data, request.user_fingerprint, article_id)
+        data = as_handler.handle_put()
+
+        return Response(data=data, status=status.HTTP_200_OK)
