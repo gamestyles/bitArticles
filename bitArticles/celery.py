@@ -28,13 +28,13 @@ def config_loggers(*args, **kwargs):
 # Load task modules from all registered Django apps.
 app.autodiscover_tasks()
 
-# app.conf.beat_schedule = {
-#     # executes every 30 seconds
-#     'periodic-scheduled-message-task': {
-#         'task': 'api.tasks...',
-#         'schedule': timedelta(seconds=30),
-#     },
-# }
+app.conf.beat_schedule = {
+    # executes every 30 seconds
+    'periodic-scheduled-article-stat-calculation': {
+        'task': 'article.tasks.find_and_execute_article_stats_calculation_task',
+        'schedule': timedelta(seconds=30),  # can be configured
+    },
+}
 
 
 @app.task(bind=True, ignore_result=True)

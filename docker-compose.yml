@@ -61,5 +61,12 @@ services:
     volumes:
       - .:/app
 
+  celery-beat:
+    build: .
+    container_name: celery-beat
+    command: celery -A bitArticles beat
+    volumes:
+      - .:/app
+
 volumes:
   staticfiles_volume:
