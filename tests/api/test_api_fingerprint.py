@@ -4,7 +4,6 @@ import uuid
 from django.urls import reverse
 
 
-@pytest.mark.django_db
 def test_unauthorized_api_request(api_client):
     """
     Tests an api with wrong type of fingerprint.
@@ -15,7 +14,6 @@ def test_unauthorized_api_request(api_client):
     assert response.status_code == 401
 
 
-@pytest.mark.django_db
 def test_forbidden_api_request(api_client):
     """
     Tests an api without fingerprint id.

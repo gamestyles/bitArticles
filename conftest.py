@@ -1,5 +1,4 @@
 import pytest
-from bitArticles import settings
 from rest_framework.test import APIClient
 from rest_framework.test import RequestsClient
 
@@ -10,7 +9,7 @@ pytest_plugins = [
 ]
 
 fixtures = [
-
+    "tests.api.fixtures"
 ]
 
 pytest_plugins += fixtures

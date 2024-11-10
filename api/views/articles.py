@@ -1,18 +1,13 @@
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import ListModelMixin
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+from api.serializers.articles import ArticleSerializer
+from article.models import Article
 
 
-class ArticleAPIView(APIView):
-    # def get_serializer(self, *args, **kwargs):
-    #     return ArticleSerializer(*args, **kwargs)
+class ArticleAPIView(ListModelMixin, GenericAPIView):
+    serializer_class = ArticleSerializer
+    queryset = Article.objects.all().order_by('-created_at')
 
     def get(self, request, *args, **kwargs):
-        """
-        Get Articles list\n
-        """
-        # TODO: just a test
-        return Response(data="Hello", status=status.HTTP_200_OK)
+        return self.list(request, *args, **kwargs)

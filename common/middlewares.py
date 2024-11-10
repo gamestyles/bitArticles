@@ -20,13 +20,10 @@ class UserFingerprintMiddleware(MiddlewareMixin):
     """
     def process_request(self, request):
         fingerprint_header = request.headers.get('X-FINGERPRINT-ID')
-        _logger.info(f"here: {fingerprint_header}")
 
         if fingerprint_header:
             fp = retrieve_fingerprint(fingerprint_header)
-            _logger.info("here fp")
             if fp:
                 request.user_fingerprint = fp
-                _logger.info("here")
             else:
                 return HttpResponseUnauthorized()
