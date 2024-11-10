@@ -12,6 +12,7 @@ from django.conf import settings
 endpoints = [
     # article endpoints
     path('articles/', articles.ArticleAPIView.as_view(), name='api-articles'),
+    # path('articles/<int:id>/score/', articles.ArticleScoreAPIView.as_view(), name='api-articles-details-score'),
 ]
 
 

@@ -41,3 +41,4 @@ def test_article_api_view_pagination(
         assert "id" in article
         assert "title" in article
         assert "created_at" in article
+        assert "user_score" in article

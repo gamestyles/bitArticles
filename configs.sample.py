@@ -1,11 +1,9 @@
-from urllib.parse import quote
-from datetime import timedelta
-
 django_settings: dict = {
     "SECRET_KEY": "django-insecure-^o*p+!@1s^4px#*0q98*5eh_nrmrj7b4bqydxvnavwd$5g%wqp",
     "DEBUG": False,
     "ALLOWED_HOSTS": ["127.0.0.1", "localhost"],
     "CSRF_TRUSTED_ORIGINS": ['http://localhost'],
+    "IS_SILK_ENABLED": False,
 
     # logs
     "LOG_DIR_NAME": 'logs/bitArticles.log',

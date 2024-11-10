@@ -235,6 +235,8 @@ HEALTHCHECK_CELERY_QUEUE_TIMEOUT = celery_confs.get('HEALTHCHECK_CELERY_QUEUE_TI
 API_VERSION = api.get('API_VERSION', 'v1')
 API_PREFIX = "api/" + API_VERSION + "/"
 
+IS_SILK_ENABLED = django_settings.get("IS_SILK_ENABLED", False)
+
 # swagger
 SWAGGER_SETTINGS = {
    'SECURITY_DEFINITIONS': {
@@ -245,3 +247,10 @@ SWAGGER_SETTINGS = {
       }
    }
 }
+
+# Debugging Tools
+if DEBUG and IS_SILK_ENABLED:
+    INSTALLED_APPS += ["silk", ]
+    MIDDLEWARE.insert(1, "silk.middleware.SilkyMiddleware")
+    SILKY_PYTHON_PROFILER = True
+    # SILKY_PYTHON_PROFILER_BINARY = True
