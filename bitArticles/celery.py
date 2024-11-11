@@ -36,7 +36,7 @@ app.conf.beat_schedule = {
     },
     'periodic-scheduled-article-suspicious-score-calculation': {
         'task': 'article.tasks.find_and_execute_article_suspicious_score_task',
-        'schedule': timedelta(minutes=10),  # should be configured
+        'schedule': timedelta(hours=1),  # should be configured
     },
 }
 
